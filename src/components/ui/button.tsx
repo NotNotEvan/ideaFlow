@@ -13,7 +13,7 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          ' whitespace-nowrap bg-gradient-to-r from-primary-blue-500 from-1% to-washed-purple-500 to-90% text-lg text-primary-foreground shadow-2xl shadow-indigo-600/50 border hover:border-foreground rounded-lg',
+          ' whitespace-nowrap bg-gradient-to-tr from-primary-blue-500 from-1% to-washed-purple-500 to-90% text-lg text-primary-foreground shadow-2xl shadow-indigo-600/50 border hover:border-foreground rounded-lg',
         destructive:
           'bg-destructive text-destructive-foreground hover:bg-destructive/90',
         outline:
