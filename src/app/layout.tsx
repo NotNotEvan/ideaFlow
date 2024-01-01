@@ -4,7 +4,7 @@ import './globals.css'
 import db from '@/lib/supabase/db'
 import { ThemeProvider } from '@/lib/providers/next-theme-provider'
 import { twMerge } from 'tailwind-merge'
-import Logo from '../../public/ideaFlow-logo.svg'
+import { AppStateProvider } from '@/lib/providers/state-providers'
 
 
 const inter = DM_Sans({ subsets: ['latin'] })
@@ -22,16 +22,15 @@ export default function RootLayout({
   console.log(db);
   return (
     <html lang="en">
-      <head>
-        <link rel="icon" href="/favicon.ico" />
-      </head>
       <body className={twMerge('bg-background', inter.className)}>
         <ThemeProvider 
           attribute="class" 
           defaultTheme="dark" 
           enableSystem
         >
-          {children}
+          <AppStateProvider>
+            {children}
+          </AppStateProvider>
         </ThemeProvider>
       </body>
     </html>
