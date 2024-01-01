@@ -128,48 +128,50 @@ const DashboardSetup: React.FC<DashboardSetupProps> = ({
                 </EmojiPicker>
               </div>
               <div className="w-full">
-                <Label htmlFor="logo" className="text-sm text-muted-foreground">
-                  Workspace Logo
+                <Label
+                  htmlFor="workspaceName"
+                  className="text-sm text-muted-foreground"
+                >
+                  Name
                 </Label>
                 <Input
-                  id="logo"
-                  type="file"
-                  accept="image/*"
-                  placeholder="Workspace Logo"
-                  disabled={isLoading || subscription?.status !== "active"}
-                  {...register("logo", {
+                  id="workspaceName"
+                  type="text"
+                  placeholder="Workspace Name"
+                  disabled={isLoading}
+                  {...register("workspaceName", {
                     required: "Workspace name is required",
                   })}
                 ></Input>
                 <small className="text-red-600">
-                  {errors?.logo?.message?.toString()}
+                  {errors?.workspaceName?.message?.toString()}
                 </small>
               </div>
             </div>
             <div>
-              <Label
-                htmlFor="workspaceName"
-                className="text-sm text-muted-foreground"
-              >
-                Name
+              <Label htmlFor="logo" className="text-sm text-muted-foreground">
+                Workspace Logo
               </Label>
               <Input
-                id="workspaceName"
-                type="text"
-                placeholder="Workspace Name"
-                disabled={isLoading}
-                {...register("workspaceName", {
-                  required: "Workspace name is required",
+                id="logo"
+                type="file"
+                accept="image/*"
+                placeholder="Workspace Logo"
+                className="cursor-pointer"
+                // disabled={isLoading || subscription?.status !== "active"}
+                {...register("logo", {
+                  required: false,
                 })}
               ></Input>
               <small className="text-red-600">
-                {errors?.workspaceName?.message?.toString()}
+                {errors?.logo?.message?.toString()}
               </small>
-              <div className="self-end">
-                <Button disabled={isLoading} type="submit">
-                  {!isLoading ? "Create Workspace" : <Loader />}
-                </Button>
-              </div>
+            </div>
+
+            <div className="self-end">
+              <Button disabled={isLoading} type="submit">
+                {!isLoading ? "Create Workspace" : <Loader />}
+              </Button>
             </div>
           </div>
         </form>
