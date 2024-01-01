@@ -59,7 +59,7 @@ const Signup = () => {
 
   const confirmationAndErrorStyles = useMemo(
     () =>
-      clsx("bg-primary", {
+      clsx("bg-gradient-to-tr from-primary-blue-500 from-1% to-primary-purple-300 to-90%", {
         "bg-red-500/10": codeExcahngeError,
         "border-red-500/50": codeExcahngeError,
         "text-red-700": codeExcahngeError,
