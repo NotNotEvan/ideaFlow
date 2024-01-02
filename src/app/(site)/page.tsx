@@ -352,7 +352,7 @@ const HomePage = () => {
                     ${card.price}
                   </span>
                   {+card.price > 0 ? (
-                    <span 
+                    <span
                       className="
                       dark:text-washed-purple-800 
                       ml-1"
@@ -360,7 +360,7 @@ const HomePage = () => {
                       /mo
                     </span>
                   ) : (
-                    ''
+                    ""
                   )}
                   <p
                     className="
@@ -374,9 +374,11 @@ const HomePage = () => {
                     whitespace-nowrap 
                     w-full 
                     mt-4"
-                    > 
-                      {card.planType === PRICING_PLANS.proplan ? 'Get Started' : 'Try for Free'}
-                    </Button>
+                  >
+                    {card.planType === PRICING_PLANS.proplan
+                      ? "Get Started"
+                      : "Try for Free"}
+                  </Button>
                 </CardContent>
               }
               cardFooter={

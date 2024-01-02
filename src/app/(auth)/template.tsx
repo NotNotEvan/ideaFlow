@@ -1,12 +1,12 @@
-import React from 'react';
+import React from "react";
 
 interface TemplateProps {
   children: React.ReactNode;
-};
+}
 
-const Template:React.FC<TemplateProps> = ({ children }) => {
+const Template: React.FC<TemplateProps> = ({ children }) => {
   return (
-    <div 
+    <div
       className="
       h-screen 
       p-6 
@@ -15,7 +15,7 @@ const Template:React.FC<TemplateProps> = ({ children }) => {
     >
       {children}
     </div>
-  )
+  );
 };
 
 export default Template;

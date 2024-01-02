@@ -11,6 +11,7 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import React from "react";
 import { twMerge } from "tailwind-merge";
+import WorkspaceDropdown from "./workspace-dropdown";
 
 interface SidebarProps {
   params: { workspaceId: string };
@@ -45,7 +46,6 @@ const Sidebar: React.FC<SidebarProps> = async ({ params, className }) => {
       getSharedWorkspaces(user.id),
     ]);
 
-  //get all different workspaces private collaborating shared
   return (
     <aside
       className={twMerge(
@@ -54,7 +54,16 @@ const Sidebar: React.FC<SidebarProps> = async ({ params, className }) => {
       )}
     >
       <div>
-        
+        <WorkspaceDropdown
+          privateWorkspaces={privateWorkspaces}
+          sharedWorkspaces={sharedWorkspaces}
+          collaboratingWorkspaces={collaboratingWorkspaces}
+          defaultValue={[
+            ...privateWorkspaces,
+            ...sharedWorkspaces,
+            ...collaboratingWorkspaces,
+          ].find((workspace) => workspace.id === params.workspaceId)}
+        ></WorkspaceDropdown>
       </div>
     </aside>
   );

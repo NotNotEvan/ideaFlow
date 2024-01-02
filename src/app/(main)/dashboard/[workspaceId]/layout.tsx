@@ -7,13 +7,15 @@ interface LayoutProps {
 }
 
 const Layout: React.FC<LayoutProps> = ({ children, params }) => {
-  return <main className="flex overflow-hidden h-screen w-screen">
-    <Sidebar params = {params}/>
+  return (
+    <main className="flex overflow-hidden h-screen w-screen">
+      <Sidebar params={params} />
 
-    <div className="dark:border-Neutrals/neutrals-12/70 border-l-[1px] w-full relative overflow-scroll">
-      {children}
-    </div>
-  </main>;
+      <div className="dark:border-Neutrals/neutrals-12/70 border-l-[1px] w-full relative overflow-scroll">
+        {children}
+      </div>
+    </main>
+  );
 };
 
 export default Layout;
