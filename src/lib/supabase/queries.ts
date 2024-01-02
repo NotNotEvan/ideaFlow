@@ -3,7 +3,7 @@
 import { validate } from "uuid";
 import { folders, users, workspaces } from "../../../migrations/schema";
 import db from "./db";
-import { Folder, Subscription, Workspace } from "./supabase.types";
+import { Folder, Subscription, workspace as workspace } from "./supabase.types";
 import { and, eq, notExists } from "drizzle-orm";
 import { collaborators } from "./schema";
 
@@ -22,7 +22,7 @@ export const getUserSubscriptionStatus = async (userId: string) => {
   }
 };
 
-export const createWorkspace = async (workspace: Workspace) => {
+export const createWorkspace = async (workspace: workspace) => {
   try {
     const response = await db.insert(workspaces).values(workspace);
     return { data: null, error: null };
@@ -76,7 +76,7 @@ export const getPrivateWorkspaces = async (userId: string) => {
         ),
         eq(workspaces.workspaceOwner, userId)
       )
-    )) as Workspace[];
+    )) as workspace[];
   return privateWorkspaces;
 };
 
@@ -98,7 +98,7 @@ export const getCollaboratorWorkspaces = async (userId: string) => {
     .from(users)
     .innerJoin(collaborators, eq(users.id, collaborators.userId))
     .innerJoin(workspaces, eq(collaborators.workspaceId, workspaces.id))
-    .where(eq(users.id, userId))) as Workspace[];
+    .where(eq(users.id, userId))) as workspace[];
   return collaboratedWorkspaces;
 };
 
@@ -120,6 +120,6 @@ export const getSharedWorkspaces = async (userId: string) => {
     .from(workspaces)
     .orderBy(workspaces.createdAt)
     .innerJoin(collaborators, eq(workspaces.id, collaborators.workspaceId))
-    .where(eq(workspaces.workspaceOwner, userId))) as Workspace[];
+    .where(eq(workspaces.workspaceOwner, userId))) as workspace[];
   return sharedWorkspaces;
 };

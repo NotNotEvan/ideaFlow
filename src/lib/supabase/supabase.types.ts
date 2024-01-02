@@ -472,7 +472,7 @@ export type Enums<
   ? Database["public"]["Enums"][PublicEnumNameOrOptions]
   : never;
 
-export type Workspace = InferSelectModel<typeof workspaces>;
+export type workspace = InferSelectModel<typeof workspaces>;
 export type User = InferSelectModel<typeof users>;
 export type Folder = InferSelectModel<typeof folders>;
 export type File = InferSelectModel<typeof files>;
