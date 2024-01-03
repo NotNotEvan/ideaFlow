@@ -12,6 +12,7 @@ import { redirect } from "next/navigation";
 import React from "react";
 import { twMerge } from "tailwind-merge";
 import WorkspaceDropdown from "./workspace-dropdown";
+import PlanUsage from "./plan-usage";
 
 interface SidebarProps {
   params: { workspaceId: string };
@@ -32,7 +33,7 @@ const Sidebar: React.FC<SidebarProps> = async ({ params, className }) => {
     await getUserSubscriptionStatus(user.id);
 
   //folders
-  const { data: workspaceFolderData, error: foldersError } = await getFolders(
+  const { data: workspaceFolderData = [], error: foldersError } = await getFolders(
     params.workspaceId
   );
 
@@ -63,7 +64,8 @@ const Sidebar: React.FC<SidebarProps> = async ({ params, className }) => {
             ...sharedWorkspaces,
             ...collaboratingWorkspaces,
           ].find((workspace) => workspace.id === params.workspaceId)}
-        ></WorkspaceDropdown>
+        />
+        <PlanUsage foldersLength={workspaceFolderData?.length || 0} subscription={subscriptionData}/>
       </div>
     </aside>
   );
