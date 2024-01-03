@@ -1,7 +1,7 @@
 "use client";
 
 import { useSupabaseUser } from "@/lib/providers/supabase-user-provider";
-import { User } from "@/lib/supabase/supabase.types";
+import { User, workspace } from "@/lib/supabase/supabase.types";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { Label } from "../ui/label";
@@ -14,7 +14,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Lock, Share } from "lucide-react";
+import { Lock, Plus, Share } from "lucide-react";
+import { Button } from "../ui/button";
+import { v4 } from "uuid";
+import { addCollaborators, createWorkspace } from "@/lib/supabase/queries";
+import CollaboratorSearch from "./collaborator-search";
 
 const WorkspaceCreator = () => {
   const { user } = useSupabaseUser();
@@ -29,6 +33,32 @@ const WorkspaceCreator = () => {
 
   const removeCollaborator = (user: User) => {
     setCollaborators(collaborators.filter((u) => u.id !== user.id));
+  };
+
+  const createItem = async () => {
+    const uuid = v4();
+    if (user?.id) {
+      const newWorkspace: workspace = {
+        data: null,
+        createdAt: new Date().toISOString(),
+        iconId: "💼",
+        id: uuid,
+        inTrash: "",
+        title,
+        workspaceOwner: user.id,
+        logo: null,
+        bannerUrl: "",
+      };
+      if (permissions === "private") {
+        await createWorkspace(newWorkspace);
+        router.refresh();
+      }
+      if (permissions === "shared") {
+        await createWorkspace(newWorkspace);
+        await addCollaborators(collaborators, uuid);
+        router.refresh();
+      }
+    }
   };
 
   return (
@@ -49,7 +79,7 @@ const WorkspaceCreator = () => {
         </div>
       </div>
       <>
-        <Label htmlFor="permission" className="text-sm text-muted-foreground">
+        <Label htmlFor="permissions" className="text-sm text-muted-foreground">
           Permission
         </Label>
         <Select
@@ -58,26 +88,32 @@ const WorkspaceCreator = () => {
           }}
           defaultValue={permissions}
         >
-          <SelectTrigger className="w-full h-20 -mt-3">
+          <SelectTrigger className="w-full h-26 -mt-3">
             <SelectValue />
           </SelectTrigger>
-          <SelectContent>
+          <SelectContent className="absolute">
             <SelectGroup>
               <SelectItem value="private">
                 <div className="p-2 flex gap-4 justify-center items-center">
                   <Lock />
                   <article className="text-left flex flex-col">
                     <span>Private</span>
-                    <p>This will create a workspace for your eyes only. Change this later if you'd like.</p>
+                    <p>
+                      This will create a workspace for your eyes only. Change
+                      this later if you'd like.
+                    </p>
                   </article>
                 </div>
               </SelectItem>
-              <SelectItem value="share">
+              <SelectItem value="shared">
                 <div className="p-2 flex gap-4 justify-center items-center">
                   <Share />
                   <article className="text-left flex flex-col">
                     <span>Shared</span>
-                    <p>This will create a workspace for you and those you'd like to collaborate with.</p>
+                    <p>
+                      This will create a workspace for you and those you'd like
+                      to collaborate with.
+                    </p>
                   </article>
                 </div>
               </SelectItem>
@@ -85,7 +121,34 @@ const WorkspaceCreator = () => {
           </SelectContent>
         </Select>
       </>
-      {permissions === "shared" && <div></div>}
+      {permissions === "shared" && (
+        <div>
+          <CollaboratorSearch
+            existingCollaborators={collaborators}
+            getCollaborators={(user) => {
+              addCollaborator(user);
+            }}
+          >
+            <Button
+              type="button"
+              variant="secondary"
+              className="text-sm mt-4 w-full"
+            >
+              <Plus />
+              Add Collaborators
+            </Button>
+          </CollaboratorSearch>{" "}
+        </div>
+      )}
+      <Button
+        type="button"
+        disabled={
+          !title || (permissions === "shared" && collaborators.length === 0)
+        }
+        onClick={createItem}
+      >
+        Create
+      </Button>
     </div>
   );
 };
