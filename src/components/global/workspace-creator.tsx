@@ -22,9 +22,11 @@ import CollaboratorSearch from "./collaborator-search";
 import { ScrollArea } from "../ui/scroll-area";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { set } from "zod";
+import { useToast } from "../ui/use-toast";
 
 const WorkspaceCreator = () => {
   const { user } = useSupabaseUser();
+  const { toast } = useToast();
   const router = useRouter();
   const [permissions, setPermissions] = useState("private");
   const [title, setTitle] = useState("");
@@ -56,11 +58,19 @@ const WorkspaceCreator = () => {
       };
       if (permissions === "private") {
         await createWorkspace(newWorkspace);
+        toast({
+          title: "Workspace Created",
+          description: "You can now start adding items to your workspace!",
+        });
         router.refresh();
       }
       if (permissions === "shared") {
         await createWorkspace(newWorkspace);
         await addCollaborators(collaborators, uuid);
+        toast({
+          title: "Workspace Created",
+          description: "You can now start adding items to your workspace!",
+        });
         router.refresh();
       }
     }
@@ -188,7 +198,9 @@ const WorkspaceCreator = () => {
         type="button"
         className="mt-4 w-full"
         disabled={
-          !title || (permissions === "shared" && collaborators.length === 0) || isLoading
+          !title ||
+          (permissions === "shared" && collaborators.length === 0) ||
+          isLoading
         }
         onClick={createItem}
       >
