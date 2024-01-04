@@ -15,6 +15,7 @@ console.log('🔌 Connected to database');
 
 const db = drizzle(client, { schema });
 
+// TODO: import pooling from drizzle-orm/postgres-js/pooling and get connection string from supabase-settings-database-connection pooling
 const migrateDb = async () => {
   try {
     console.log('🚀 Migrating database');

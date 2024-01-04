@@ -23,6 +23,7 @@ export const getUserSubscriptionStatus = async (userId: string) => {
       return { data: null, error: null };
     }
   } catch (error) {
+    console.log(error);
     return { data: null, error: `Error: ${error}` };
   }
 };
@@ -40,6 +41,7 @@ export const createWorkspace = async (workspace: workspace) => {
 export const getFolders = async (workspaceId: string) => {
   const isValid = validate(workspaceId);
   if (!isValid) {
+    console.log("Invalid workspace id");
     return { data: null, error: "Error" };
   }
 
@@ -51,6 +53,7 @@ export const getFolders = async (workspaceId: string) => {
       .where(eq(folders.workspaceId, workspaceId));
     return { data: null, error: null };
   } catch (error) {
+    console.log(error);
     return { data: null, error: "Error" };
   }
 };
@@ -142,6 +145,16 @@ export const addCollaborators = async (users: User[], workspaceId: string) => {
       });
     }
   });
+};
+
+export const createFolder = async (folder: Folder) => {
+  try {
+    const response = await db.insert(folders).values(folder);
+    return { data: null, error: null };
+  } catch (error) {
+    console.log(error);
+    return { data: null, error: "Error" };
+  }
 };
 
 export const getUsersFromSearch = async (email: string) => {
