@@ -14,6 +14,8 @@ import { twMerge } from "tailwind-merge";
 import WorkspaceDropdown from "./workspace-dropdown";
 import PlanUsage from "./plan-usage";
 import NativeNavigation from "./native-navigation";
+import { ScrollArea } from "../ui/scroll-area";
+import FoldersDropdownList from "./folders-dropdown-list";
 
 interface SidebarProps {
   params: { workspaceId: string };
@@ -34,9 +36,8 @@ const Sidebar: React.FC<SidebarProps> = async ({ params, className }) => {
     await getUserSubscriptionStatus(user.id);
 
   //folders
-  const { data: workspaceFolderData = [], error: foldersError } = await getFolders(
-    params.workspaceId
-  );
+  const { data: workspaceFolderData = [], error: foldersError } =
+    await getFolders(params.workspaceId);
 
   //error
   if (subsriptionError || foldersError) redirect("/dashboard");
@@ -66,8 +67,15 @@ const Sidebar: React.FC<SidebarProps> = async ({ params, className }) => {
             ...collaboratingWorkspaces,
           ].find((workspace) => workspace.id === params.workspaceId)}
         />
-        <PlanUsage foldersLength={workspaceFolderData?.length || 0} subscription={subscriptionData}/>
-        <NativeNavigation myWorkspaceId = {params.workspaceId}/>
+        <PlanUsage
+          foldersLength={workspaceFolderData?.length || 0}
+          subscription={subscriptionData}
+        />
+        <NativeNavigation myWorkspaceId={params.workspaceId} />
+        <ScrollArea className="overflow-scroll relavtive h-[450px]">
+          <div className="pointer-events-none w-full absolute bottom-0 h-20 bg-gradient-to-t from-background z-40" />
+          <FoldersDropdownList workspaceFolders={workspaceFolderData || []} workspaceId={params.workspaceId}/>
+        </ScrollArea>
       </div>
     </aside>
   );
