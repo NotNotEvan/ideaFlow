@@ -37,7 +37,7 @@ const PlanUsage: React.FC<PlanUsageProps> = ({
           <div className="h-4 w-4"><DiamondIcon/></div>
           <div className="flex justify-between w-full items-center">
             <div>Free Plan</div>
-            <small>{useagePercentage.toFixed()}</small>
+            <small>{useagePercentage.toFixed(0)}% / 100%</small>
           </div>
         </div>
       )}
