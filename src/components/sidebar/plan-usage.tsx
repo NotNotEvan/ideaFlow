@@ -4,6 +4,8 @@ import { MAX_FOLDERS_FREE_PLAN } from "@/lib/constants";
 import { useAppState } from "@/lib/providers/state-providers";
 import { Subscription } from "@/lib/supabase/supabase.types";
 import React, { useEffect, useState } from "react";
+import { Progress } from "../ui/progress";
+import DiamondIcon from "../icons/DiamongIcon";
 
 interface PlanUsageProps {
   foldersLength: number;
@@ -31,10 +33,16 @@ const PlanUsage: React.FC<PlanUsageProps> = ({
   return (
     <article className="mb-4">
       {subscription?.status !== "active" && (
-        <div className="flex justify-between w-full items-center">
-          <div>Free Plan</div>
-          <small>{useagePercentage.toFixed()}</small>
+        <div className="flex gap-2 text-muted-foreground mb-2 items-center">
+          <div className="h-4 w-4"><DiamondIcon/></div>
+          <div className="flex justify-between w-full items-center">
+            <div>Free Plan</div>
+            <small>{useagePercentage.toFixed()}</small>
+          </div>
         </div>
+      )}
+      {subscription?.status !== "active" && (
+        <Progress value={useagePercentage} className="h-1" />
       )}
     </article>
   );
